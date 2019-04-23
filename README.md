@@ -3,7 +3,7 @@
 ## Utility programs for Aquatics
 
 These applications process exported AMS data to create new tab-delimited files to be loaded into PyRAT
-(that's [PyRAT](https://www.scionics.com/pyrat.html)] the animal facility software, not [Pyrat](http://www.pyratrum.com)] the rum).
+(that's [PyRAT](https://www.scionics.com/pyrat.html)] the animal facility software, not [Pyrat](http://www.pyratrum.com) the rum).
 
 ## Installation for local use
 
