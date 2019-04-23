@@ -31,17 +31,17 @@ These files should be in the same directory as the programs.
 
 ## Creation of PyRAT files
 
-Run the programs in order:
+Run the program:
+   ```
+   python3 export_ams_data.py
+   ```
 
-1. Build the users.txt file:
+There should be three new files in the directory:
+- users.txt
+- strains.txt
+- tanks.txt
+
+When you're all done, exit the virtual environment:
    ```
-   python3 export_ams_users.py
-   ```
-2. Build the strains.txt file:
-   ```
-   python3 export_ams_strains.py
-   ```
-3. Build the tanks.txt file:
-   ```
-   python3 export_ams_tanks.py
+   deactivate
    ```

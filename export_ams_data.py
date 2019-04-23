@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 import colorlog
 import requests
@@ -24,7 +25,8 @@ def call_responder(server, endpoint):
 def process_users():
     print("Creating users.txt")
     input = open("User.tsv", "r")
-    output = open("users.txt", "w")
+    output = open("users_transient.txt", "w")
+    output2 = open("users.txt", "w")
     output.write("ID\tUsername\tFirst name\tLast name\tEmail\n")
     for line in input:
         if line.split("\t")[0] == 'UserID':
@@ -39,6 +41,7 @@ def process_users():
             resp = call_responder('config', 'config/workday/' + uid)
             if 'config' in resp:
                 output.write("%s\t%s\t%s\t%s\t%s\n" % (id, uid, resp['config']['first'], resp['config']['last'], resp['config']['email']))
+                output2.write("%s\t%s\t%s\t%s\n" % (uid, resp['config']['first'], resp['config']['last'], resp['config']['email']))
                 LOGGER.info(uid)
                 continue
         if first and last:
@@ -49,20 +52,21 @@ def process_users():
             resp = call_responder('config', 'config/workday/' + uid)
             if 'config' in resp:
                 output.write("%s\t%s\t%s\t%s\t%s\n" % (id, uid, resp['config']['first'], resp['config']['last'], resp['config']['email']))
+                output2.write("%s\t%s\t%s\t%s\n" % (uid, resp['config']['first'], resp['config']['last'], resp['config']['email']))
                 LOGGER.info(uid)
                 continue
             else:
                 LOGGER.error("Could not find data for %s", uid)
-                output.write("%s\t%s\t%s\t%s\t%s\n" % (id, uid, first, last, 'CORRECT THIS ROW MANUALLY')) 
+                output.write("%s\t%s\t%s\t%s\t%s\n" % (id, uid, first, last, 'CORRECT THIS ROW MANUALLY'))
         else:
             LOGGER.error("Incomplete information for %s", line)
     input.close()
     output.close()
+    output2.close()
 
 
-def process_stocks():
-    print("Creating strains.txt")
-    input = open("users.txt", "r")
+def create_user_dict():
+    input = open("users_transient.txt", "r")
     userdict = dict()
     for line in input:
         if line.split("\t")[0] == 'Username':
@@ -73,6 +77,12 @@ def process_stocks():
         else:
             LOGGER.warning("Missing information for user %s", line.split("\t")[1])
     input.close()
+    os.remove("users_transient.txt") 
+    return(userdict)
+
+
+def process_stocks():
+    print("Creating strains.txt")
     input = open("Stock.tsv", "r")
     output = open("strains.txt", "w")
     output.write("Name\tUsername\tSpecies\n")
@@ -94,23 +104,13 @@ def process_stocks():
             LOGGER.info(strain)
         else:
             LOGGER.critical("Could not find user %s", userid)
+            sys.exit(-1)
     input.close()
     output.close()
 
 
 def process_tanks():
     print("Creating tanks.txt")
-    input = open("users.txt", "r")
-    userdict = dict()
-    for line in input:
-        if line.split("\t")[0] == 'Username':
-            continue
-        line = line.strip()
-        if 'CORRECT' not in line.split("\t")[-1]:
-            userdict[line.split("\t")[0]] = line.split("\t")[1]
-        else:
-            LOGGER.warning("Missing information for user %s", line.split("\t")[1])
-    input.close()
     input = open("Unit.tsv", "r")
     output = open("tanks.txt", "w")
     output.write("StockID\tName\tUsername\tAmount\t# males\t# females\tBirthdate\n")
@@ -140,6 +140,7 @@ def process_tanks():
             LOGGER.info(tank)
         else:
             LOGGER.critical("Could not find user %s", userid)
+            sys.exit(-1)
     input.close()
     output.close()
 
@@ -168,6 +169,7 @@ if __name__ == '__main__':
 
     CONFIG = call_responder('config', 'config/rest_services')['config']
     process_users()
+    userdict = create_user_dict()
     process_stocks()
     process_tanks()
     sys.exit(0)
