@@ -24,8 +24,17 @@ First, prepare a virtual environment:
 Next, export data from AMS. Export data from User, Stock, and Unit tables:
 
 - User: export all columns into a new tab-delimited file named User.tsv
+  ```
+  SELECT * FROM "User"
+  ```
 - Stock: export StockID, Name, State, and UserID into a new tab-delimited file named Stock.tsv
-- Unit: export Name, State, SetupDate, SetupAmountMales, SetupAmountFemales, CurrentAmountMales, CurrentAmountFemales, FemaleStockID, MaleStockID, and UserID into a new tab-delimited file named Unit.tsv
+  ```
+  SELECT * FROM "Stock"
+  ```
+- Unit: export Name, State, SetupDate, CurrentAmountMales, CurrentAmountFemales, FemaleStockID, MaleStockID, and UserID into a new tab-delimited file named Unit.tsv
+  ```
+  SELECT * FROM "Unit"
+  ```
 
 These files should be in the same directory as the programs.
 
