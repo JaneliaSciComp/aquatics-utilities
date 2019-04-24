@@ -132,7 +132,8 @@ def process_tanks():
             continue
         if userid in userdict:
             birth = field[2].split(' ')[0]
-            output.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (femaleid, tank, userdict[userid],
+            stockid = femaleid if femaleid != '(null)' else maleid
+            output.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (stockid, tank, userdict[userid],
                                                            str(int(field[3]) + int(field[4])),
                                                            field[3], field[4], birth))
             LOGGER.info(tank)
