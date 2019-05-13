@@ -16,7 +16,7 @@ First, prepare a virtual environment:
     ```
 2. Install requirements
     ```
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
     ```
 
 ## Preparation of AMS data
@@ -27,13 +27,13 @@ Next, export data from AMS. Export data from User, Stock, and Unit tables:
   ```
   SELECT * FROM "User"
   ```
-- Stock: export StockID, Name, State, and UserID into a new tab-delimited file named Stock.tsv
+- Stock: export StockID, Birthday, Name, State, and UserID into a new tab-delimited file named Stock.tsv
   ```
-  SELECT * FROM "Stock"
+  SELECT StockID,Birthday,Name,State,UserID FROM "Stock"
   ```
 - Unit: export Name, State, SetupDate, CurrentAmountMales, CurrentAmountFemales, FemaleStockID, MaleStockID, and UserID into a new tab-delimited file named Unit.tsv
   ```
-  SELECT * FROM "Unit"
+  SELECT Name,State,SetupDate,CurrentAmountMales,CurrentAmountFemales,FemaleStockID,MaleStockID,UserID FROM "Unit"
   ```
 
 These files should be in the same directory as the programs.
@@ -42,7 +42,7 @@ These files should be in the same directory as the programs.
 
 Run the program:
    ```
-   python3 export_ams_data.py
+   python export_ams_data.py
    ```
 
 There should be three new files in the directory:

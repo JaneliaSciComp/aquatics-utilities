@@ -83,7 +83,7 @@ def process_stocks():
     print("Creating strains.txt")
     input = open("Stock.tsv", "r")
     output = open("strains.txt", "w")
-    output.write("Name\tUsername\tSpecies\n")
+    output.write("StockID\tName\tDate of birth\tUsername\tSpecies\n")
     for line in input:
         if line.split("\t")[0] == 'StockID':
             continue
@@ -98,7 +98,7 @@ def process_stocks():
             continue
         userid = field[-1]
         if userid in userdict:
-            output.write("%s\t%s\t%s\n" % (strain, userdict[userid], 'zebrafish'))
+            output.write("%s\t%s\t%s\t%s\t%s\n" % (field[0], strain, field[2].split(' ')[0], userdict[userid], 'zebrafish'))
             LOGGER.info(strain)
         else:
             LOGGER.critical("Could not find user %s", userid)
