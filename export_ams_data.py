@@ -35,7 +35,7 @@ def process_users():
         id = line.split("\t")[0]
         last = line.split("\t")[1]
         email = line.split("\t")[2]
-        first = line.split("\t")[7]
+        first = line.split("\t")[6]
         if email:
             uid = email.split('@')[0]
             resp = call_responder('config', 'config/workday/' + uid)
